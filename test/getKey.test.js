@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const getKey = require('../index').getKey;
+const { getKey } = require('../index');
 
 describe('getKey', function () {
   describe('it should parse JSON key file correctly', function () {
@@ -14,15 +14,19 @@ describe('getKey', function () {
       expect(key.type).to.equal('service_account');
     });
   });
-  describe('it should check key object', function() {
+  describe('it should check key object', function () {
     it('should throw error if some fields missing', function () {
       expect(() => getKey({})).to.throw(Error, 'key is invalid!');
       expect(() => getKey({ type: 'aaa' })).to.throw(Error, 'key is invalid!');
       expect(() => getKey({ type: 'service_account' })).to.throw(Error, 'key is invalid!');
       expect(() => getKey({ type: 'service_account', project_id: 'abc-123' })).to.throw(Error, 'key is invalid!');
       expect(() => getKey({ type: 'service_account', project_id: 'abc-123', private_key: '-----BEGIN PRIVATE KEY-----\nMIIE' })).to.throw(Error, 'key is invalid!');
-      expect(() => getKey({ type: 'service_account', project_id: 'abc-123', private_key: '-----BEGIN PRIVATE KEY-----\nMIIE', client_email: '' })).to.throw(Error, 'key is invalid!');
-      expect(() => getKey({ type: 'service_account', project_id: 'abc-123', private_key: '-----BEGIN PRIVATE KEY-----\nMIIE', client_email: 'user-name@gcp-project-1245.iam.gserviceaccount.com' })).to.not.throw(Error, 'key is invalid!');
+      expect(() => getKey({
+        type: 'service_account', project_id: 'abc-123', private_key: '-----BEGIN PRIVATE KEY-----\nMIIE', client_email: '',
+      })).to.throw(Error, 'key is invalid!');
+      expect(() => getKey({
+        type: 'service_account', project_id: 'abc-123', private_key: '-----BEGIN PRIVATE KEY-----\nMIIE', client_email: 'user-name@gcp-project-1245.iam.gserviceaccount.com',
+      })).to.not.throw(Error, 'key is invalid!');
     });
   });
 });

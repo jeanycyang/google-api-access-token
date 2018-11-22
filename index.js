@@ -5,7 +5,7 @@
 
 const fs = require('fs');
 
-exports.getKey = function getKey(pathOrObject) {
+function getKey(pathOrObject) {
   let key;
   if (typeof pathOrObject === 'string') {
     key = JSON.parse(fs.readFileSync(pathOrObject, 'utf8'));
@@ -20,7 +20,9 @@ exports.getKey = function getKey(pathOrObject) {
   return key;
 }
 
-exports.default = function getAccessToken(pathOrObject, scope) {
+exports.getKey = getKey;
+
+exports.default = function getAccessToken(pathOrObject) {
   const key = getKey(pathOrObject);
   return key;
-}
+};
