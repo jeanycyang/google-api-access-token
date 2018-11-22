@@ -33,7 +33,7 @@ const JWTHeader = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9';
 function getJWTClaim(clientEmail, scope) {
   if (!clientEmail) throw Error('must provide clientEmail');
   if (!scope) throw Error('must provide scope');
-  const unixEpochTime = (new Date()).getTime();
+  const unixEpochTime = Math.floor((new Date()).getTime() / 1000);
   const payload = {
     iss: clientEmail,
     scope,
