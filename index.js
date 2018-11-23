@@ -4,11 +4,27 @@
 */
 
 const fs = require('fs');
+const crypto = require('crypto');
+
+function fromBase64(string) {
+  return string
+    .replace(/=/g, '')
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_');
+}
 
 function getBase64From(string) {
-  return Buffer.from(string).toString('base64')
-    .replace(/={1,2}$/, ''); // remove padding(s)
+  return fromBase64(Buffer.from(string, 'utf8').toString('base64'));
 }
+
+function SHA256withRSA(privateKey, string) {
+  const signer = crypto.createSign('SHA256');
+  signer.update(string);
+  const sig = signer.sign(privateKey, 'base64');
+  return fromBase64(sig);
+}
+
+exports.SHA256withRSA = SHA256withRSA;
 
 function getKey(pathOrObject) {
   let key;
@@ -48,6 +64,8 @@ exports.getJWTClaim = getJWTClaim;
 
 exports.default = function getAccessToken(pathOrObject, scope) {
   const key = getKey(pathOrObject);
-  const jwt = `${JWTHeader}.${getJWTClaim(key.client_email, scope)}`;
+  const data = `${JWTHeader}.${getJWTClaim(key.client_email, scope)}`;
+  const signature = SHA256withRSA(key.private_key, data);
+  const jwt = `${data}.${signature}`;
   return jwt;
 };
