@@ -5,6 +5,8 @@
 
 const fs = require('fs');
 const crypto = require('crypto');
+const https = require('https');
+const querystring = require('querystring');
 
 function fromBase64(string) {
   return string
@@ -62,10 +64,46 @@ function getJWTClaim(clientEmail, scope) {
 
 exports.getJWTClaim = getJWTClaim;
 
-exports.default = function getAccessToken(pathOrObject, scope) {
+function getAccessTokenFromGoogle(jwt) {
+  const postData = querystring.stringify({
+    grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+    assertion: jwt,
+  });
+  const options = {
+    method: 'POST',
+    hostname: 'www.googleapis.com',
+    port: 443,
+    path: '/oauth2/v4/token',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Length': postData.length,
+    },
+  };
+  return new Promise((resolve, reject) => {
+    const req = https.request(options, (resp) => {
+      let data = '';
+      resp.on('data', (chunk) => {
+        data += chunk;
+      });
+      resp.on('end', () => {
+        resolve(JSON.parse(data));
+      });
+    }).on('error', (err) => {
+      reject(err);
+    });
+    req.write(postData);
+    req.on('error', (e) => {
+      reject(e);
+    });
+    req.end();
+  });
+}
+
+exports.default = async function getAccessToken(pathOrObject, scope) {
   const key = getKey(pathOrObject);
   const data = `${JWTHeader}.${getJWTClaim(key.client_email, scope)}`;
   const signature = SHA256withRSA(key.private_key, data);
   const jwt = `${data}.${signature}`;
-  return jwt;
+  const accessToken = await getAccessTokenFromGoogle(jwt).then(resp => resp.access_token);
+  return accessToken;
 };
