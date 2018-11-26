@@ -1,0 +1,10 @@
+{
+  "per-file": true,
+  "ignore-class-method": "methodToIgnore",
+  "reporter": [
+    "lcov",
+    "text-summary"
+  ],
+  "cache": true,
+  "all": true
+}

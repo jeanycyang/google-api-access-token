@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/%40jeanycyang%2Fgoogle-api-access-token.svg)](https://badge.fury.io/js/%40jeanycyang%2Fgoogle-api-access-token)
 [![Build Status](https://travis-ci.org/jeanycyang/google-api-access-token.svg?branch=master)](https://travis-ci.org/jeanycyang/google-api-access-token)
-<!-- [![Test Coverage][coveralls-image]][coveralls-url] -->
+[![Coverage Status](https://coveralls.io/repos/github/jeanycyang/google-api-access-token/badge.svg?branch=master)](https://coveralls.io/github/jeanycyang/google-api-access-token?branch=master)
 
 Get Google API access token from Google Cloud service account file/object.
 

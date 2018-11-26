@@ -2,6 +2,11 @@ const { expect } = require('chai');
 const { getKey } = require('../index');
 
 describe('getKey', function () {
+  describe('it should throw error if input not correct', function () {
+    it('should throw error if input is neither string nor object', function () {
+      expect(() => getKey(123)).to.throw(Error, 'no google cloud service-account key found!');
+    });
+  });
   describe('it should parse JSON key file correctly', function () {
     const key = getKey('./test/gckey.example.json');
     it('should return an object', function () {
