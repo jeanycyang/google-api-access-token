@@ -41,6 +41,10 @@ const accessToken = getAccessToken({
 }, 'https://www.googleapis.com/drive/v2/files');
 ```
 
+## References
+- https://developers.google.com/identity/protocols/OAuth2ServiceAccount
+- https://developers.google.com/identity/protocols/googlescopes
+
 ## License
 
 MIT
