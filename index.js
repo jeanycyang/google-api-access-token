@@ -107,3 +107,5 @@ exports.default = async function getAccessToken(pathOrObject, scope) {
   const accessToken = await getAccessTokenFromGoogle(jwt).then(resp => resp.access_token);
   return accessToken;
 };
+
+module.exports = exports;

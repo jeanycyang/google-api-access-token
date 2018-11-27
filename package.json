@@ -1,6 +1,6 @@
 {
   "name": "@jeanycyang/google-api-access-token",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "get google api access token via service-account json file",
   "main": "index.js",
   "scripts": {
