@@ -3,6 +3,11 @@
 * https://developers.google.com/identity/protocols/googlescopes
 */
 
+// For import syntax
+Object.defineProperty(exports, '__esModule', {
+  value: true,
+});
+
 const fs = require('fs');
 const crypto = require('crypto');
 const https = require('https');
@@ -107,5 +112,3 @@ exports.default = async function getAccessToken(pathOrObject, scope) {
   const accessToken = await getAccessTokenFromGoogle(jwt).then(resp => resp.access_token);
   return accessToken;
 };
-
-module.exports = exports;
