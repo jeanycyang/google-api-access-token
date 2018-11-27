@@ -104,11 +104,16 @@ function getAccessTokenFromGoogle(jwt) {
   });
 }
 
-exports.default = async function getAccessToken(pathOrObject, scope) {
+async function getAccessToken(pathOrObject, scope) {
   const key = getKey(pathOrObject);
   const data = `${JWTHeader}.${getJWTClaim(key.client_email, scope)}`;
   const signature = SHA256withRSA(key.private_key, data);
   const jwt = `${data}.${signature}`;
   const accessToken = await getAccessTokenFromGoogle(jwt).then(resp => resp.access_token);
   return accessToken;
-};
+}
+
+exports.getAccessToken = getAccessToken;
+exports.default = getAccessToken;
+
+module.exports = exports;
