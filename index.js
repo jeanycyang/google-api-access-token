@@ -91,7 +91,7 @@ function getAccessTokenFromGoogle(jwt) {
         data += chunk;
       });
       resp.on('end', () => {
-        resolve(JSON.parse(data));
+        resolve(JSON.parse(data).access_token);
       });
     }).on('error', (err) => {
       reject(err);
@@ -104,13 +104,12 @@ function getAccessTokenFromGoogle(jwt) {
   });
 }
 
-async function getAccessToken(pathOrObject, scope) {
+function getAccessToken(pathOrObject, scope) {
   const key = getKey(pathOrObject);
   const data = `${JWTHeader}.${getJWTClaim(key.client_email, scope)}`;
   const signature = SHA256withRSA(key.private_key, data);
   const jwt = `${data}.${signature}`;
-  const accessToken = await getAccessTokenFromGoogle(jwt).then(resp => resp.access_token);
-  return accessToken;
+  return getAccessTokenFromGoogle(jwt);
 }
 
 exports.getAccessToken = getAccessToken;
