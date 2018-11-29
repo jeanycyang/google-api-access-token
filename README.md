@@ -20,14 +20,27 @@ npm install --save @jeanycyang/google-api-access-token
 
 ```javascript
 const getAccessToken = require('@jeanycyang/google-api-access-token');
+```
+Function `getAccessToken` returns a promise.
 
-// from file path
-const accessToken = getAccessToken('./config/gckey.json', 'https://www.googleapis.com/drive/v2/files');
+you can provide json file path or directly use object.
+
+### from a json file
+
+```javascript
+const accessToken = await getAccessToken('./config/gckey.json', 'https://www.googleapis.com/drive/v2/files');
 ```
 or
+
 ```javascript
-// from google cloud key object
-const accessToken = getAccessToken({
+getAccessToken('./config/gckey.json', 'https://www.googleapis.com/drive/v2/files')
+  .then(accessToken => { ... });
+```
+
+### from google cloud key object
+
+```javascript
+const accessToken = await getAccessToken({
     "type": "service_account",
   "project_id": "gcp-project-1245",
   "private_key_id": "xxxxx",
@@ -39,6 +52,24 @@ const accessToken = getAccessToken({
   "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
   "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/user-name%40gcp-project-1245.iam.gserviceaccount.com"
 }, 'https://www.googleapis.com/drive/v2/files');
+```
+
+or
+
+```javascript
+getAccessToken({
+  "type": "service_account",
+  "project_id": "gcp-project-1245",
+  "private_key_id": "xxxxx",
+  "private_key": "-----BEGIN PRIVATE KEY-----....",
+  "client_email": "user-name@gcp-project-1245.iam.gserviceaccount.com",
+  "client_id": "1234874585712327208344",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/user-name%40gcp-project-1245.iam.gserviceaccount.com"
+}, 'https://www.googleapis.com/drive/v2/files')
+  .then(accessToken => { ... });
 ```
 
 ## References
